@@ -1,0 +1,23 @@
+extends layout
+
+block content
+
+  h1 #{title}
+  if user_id
+    h1 #{user_id}
+          
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='userName') User Name:
+      input#userName.form-control(type='text', placeholder='Horatio Nelson' name='userName' required='true' value=(undefined===user ? '' : user.userName) )
+    div.form-group
+      label(for='gameID') Game ID:
+      input#gameID.form-control(type='text', placeholder='xxx' name='gameID' value=(undefined===game ? '' : game.gameID) )
+    div.form-group
+      button.btn.btn-primary(type='submit') Join
+
+  if errors 
+    ul
+      for error in errors
+        li!= error.msg
