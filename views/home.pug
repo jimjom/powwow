@@ -1,0 +1,20 @@
+extends layout
+
+block content
+
+  if title
+    h1 #{title}
+
+  if user
+    h1 #{user.userName}
+    h1 #{user._id}
+
+  if games
+    each game in games
+      li
+        a(href=game.url) #{game._id}
+
+  if errors 
+    ul
+      for error in errors
+        li!= error.msg
