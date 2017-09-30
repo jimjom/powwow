@@ -1,44 +1,35 @@
 var User = require('../models/user');
-
+var Game = require('../models/game');
 var async = require('async');
 
-exports.user_get = function(req, res, next){
-  var user_id = req.cookies['user_id'];
-  console.log('user_id: '+user_id);
-  res.render('user', {title: 'User', user_id: user_id});
+var title = 'PowWow';
+
+var get_user = function(user_id, callback){
+  if(user_id){
+    User.findById( user_id, function(err, user) {
+      if(err) { return next(err); }
+      callback(null, user);
+    });
+  }
 };
 
-exports.user_post = function(req, res, next){
+var get_games = function(callback){
+  Game.find().exec(callback);
+}
 
-  req.checkBody('userName', 'User name required').notEmpty();
-  req.sanitize('userName').escape();
-  req.sanitize('userName').trim();
+exports.home_get = function(req, res, next){
 
-  var user = new User( { userName: req.body.userName });
-  
-  var errors = req.validationErrors();
-
-  if(errors){
-    res.render('user', { title: 'User', errors: errors });
-  }else {
-    User.findOne({ 'userName': req.body.userName })
-        .exec( function(err, found_user){
-                 console.log('found_user: ' + found_user);
-                 if (err) { return next(err); }
-
-                 if (found_user) {
-                     //Genre exists, redirect to its detail page
-                     res.cookie('user_id', found_user._id).render('user', {title: 'Found User', user_id: found_user._id});
-                 }
-                 else {
-
-                     user.save(function (err) {
-                       if (err) { return next(err); }
-                       //Genre saved. Redirect to genre detail page
-                       res.cookie('user_id', user._id).render('user', {title: 'New User', user_id: user._id});
-                     });
-
-                 } 
-        });
-  }
+  async.parallel({
+      user: function(callback) {
+        get_user(req.cookies['user_id'], callback);
+      },
+      games: function(callback) {
+        get_games(callback);
+      },
+    }, function(err, results) {
+      if(err) { return next(err); }
+      //console.log('user_id: '+user_id);
+      //console.log('games:' + results.games);
+      res.render('home', {title: title, user: results.user, games:results.games});
+    });
 };
