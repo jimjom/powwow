@@ -4,18 +4,11 @@ var async = require('async');
 
 var title = 'PowWow';
 
-var get_game = function (game_id, callback) {
-  Game.findById(game_id, function (err, game) {
-    if (err) { return next(err); }
-    callback(null, game);
-  });
-};
-
 exports.game_list_get = function (req, res, next) {
   Game.find({}, function(err, games) {
     res.render('game_list', {games: games});
   })
-}
+};
 
 exports.game_get = function(req, res, next){
   var game_id = req.params.id;
@@ -38,15 +31,14 @@ exports.game_get = function(req, res, next){
     }
   },
     function(err, results){
-      console.log(results);
       var is_in_user_list = results.game.user_list.filter(function (user) {
-        return user.id = results.user._id;
-      }).length > 0;  
+        return (user._id.toString() == results.user._id.toString());
+      }).length > 0; 
       console.log(is_in_user_list);
-      console.log(results.game.user_list.indexOf(results.user._id));
       if(!is_in_user_list) {
         results.game.user_list.push(results.user); 
         results.game.save();
+        console.log(results.game.user_list);
       }
       
       //results.game.populate('user_list').exec( function (err, game) {
@@ -57,8 +49,7 @@ exports.game_get = function(req, res, next){
 };
 
 exports.game_create_get = function(req, res, next){
-      console.log('create GAME');
-      res.render('game_create', {title: title});
+  res.render('game_create', {title: title});
 };
 
 exports.game_create_post = function (req, res, next) {

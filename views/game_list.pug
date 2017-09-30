@@ -16,7 +16,7 @@ block content
                     td.game-status #{game.status}
                     td.game-id #{game.id}
                     td
-                        form(method='POST' action='game/'+game.id)
+                        form(method='GET' action='game/'+game.id)
                             button.game-delete.btn-primary(type='submit') Join
                     td
                         form(method='POST' action='game/delete/'+game.id)
