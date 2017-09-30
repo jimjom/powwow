@@ -17,20 +17,48 @@ exports.game_list_get = function (req, res, next) {
   })
 }
 
-exports.game_get = function (req, res, next) {
-  async.series({
-    game: function (callback) {
-      get_game(req.params.id, callback);
+exports.game_get = function(req, res, next){
+  var game_id = req.params.id;
+  var user_id = req.cookies['user_id'];
+
+  async.parallel({
+    game: function(callback){
+      Game.findById(game_id)
+          .populate('user_list', 'userName')
+          .exec( function(err, found_game) {
+        if(err){ return next(err); }
+        callback(null, found_game);
+      });
     },
-  }, function (err, results) {
-    console.log(results.game.name);
-    res.render('game', { game: results.game });
-  });
+    user: function(callback){
+      User.findById(user_id, function(err, user) {
+        if(err){ return next(err); }
+        callback(null, user);
+      });
+    }
+  },
+    function(err, results){
+      console.log(results);
+      var is_in_user_list = results.game.user_list.filter(function (user) {
+        return user.id = results.user._id;
+      }).length > 0;  
+      console.log(is_in_user_list);
+      console.log(results.game.user_list.indexOf(results.user._id));
+      if(!is_in_user_list) {
+        results.game.user_list.push(results.user); 
+        results.game.save();
+      }
+      
+      //results.game.populate('user_list').exec( function (err, game) {
+        res.render('game', {game: results.game});
+      //});
+    }
+  );
 };
 
-exports.game_create_get = function (req, res, next) {
-  console.log('create GAME');
-  res.render('game_create', { title: title });
+exports.game_create_get = function(req, res, next){
+      console.log('create GAME');
+      res.render('game_create', {title: title});
 };
 
 exports.game_create_post = function (req, res, next) {
