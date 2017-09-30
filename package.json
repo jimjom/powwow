@@ -7,6 +7,8 @@
     "devstart": "nodemon ./bin/www"
   },
   "dependencies": {
+    "mongoose": "~4.11.13",
+    "express-validator": "~4.2.1",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
