@@ -1,0 +1,25 @@
+extend layout
+
+block content
+    h1 All games
+
+    if games
+        table
+            thead
+                th Game Name
+                th Status
+                th Id
+                th
+            each game in games
+                tr(data-id=game.id)
+                    td.game-name #{game.name}
+                    td.game-status #{game.status}
+                    td.game-id #{game.id}
+                    td
+                        form(method='POST' action='game/'+game.id)
+                            button.game-delete.btn-primary(type='submit') Join
+                    td
+                        form(method='POST' action='game/delete/'+game.id)
+                            button.game-delete.btn-primary(type='submit') Delete
+
+
