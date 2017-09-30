@@ -1,5 +1,13 @@
 extends layout
 
 block content
+  
   h1= title
   p Welcome to #{title}
+    div.form-group
+      label(for='action') action: 
+      input(type='text' name='action')
+    div.form-group
+      button.btn.btn-primary(type='button' onclick='send_post()') send_post test
+  div#div_response
+	

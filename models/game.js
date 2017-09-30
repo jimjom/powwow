@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var GameSchema = Schema({
   name: {type: String},
   status: {type: String},
-  user: [{ type: Schema.ObjectId, ref: 'User'}],
+  user_list: [{ type: Schema.ObjectId, ref: 'User'}],
   board: { any: [{}] },
 });
 

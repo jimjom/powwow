@@ -5,3 +5,9 @@ block content
 
   if(game)
     h1= game.name
+
+  if(game.user_list)
+    ul
+    each user in game.user_list
+      li  #{user.userName}
+

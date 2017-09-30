@@ -14,6 +14,13 @@ block content
       li
         a(href=game.url) #{game._id}
 
+  div.form-group
+    label(for='action') action: 
+    input(type='text' name='action')
+  div.form-group
+    button.btn.btn-primary(type='button' onclick='send_post()') send_post test
+  div#div_response
+
   if errors 
     ul
       for error in errors
