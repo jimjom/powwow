@@ -4,36 +4,18 @@ var async = require('async');
 
 var title = 'PowWow';
 
-var get_game = function(game_id, callback){
-  Game.findById( game_id, function(err, game) {
-    if(err){ return next(err); }
+var get_game = function (game_id, callback) {
+  Game.findById(game_id, function (err, game) {
+    if (err) { return next(err); }
     callback(null, game);
   });
 };
 
-var log_in_user = function(game_id, user_id, log_in_user_callback){
-  async.parallel({
-    game: function(callback){
-      Game.findById(game_id, function(err, game) {
-        if(err){ return next(err); }
-        console.log('game found' + game._id);
-        callback(null, game);
-      });
-    },
-    user: function(callback){
-      User.findById(user_id, function(err, user) {
-        if(err){ return next(err); }
-        console.log('user found' + user.userName);
-        callback(null, user);
-      });
-    },
-    function(err, results){
-      console.log(results);
-      //console.log('user: '+results.user.userName);
-      //results.game.user_list.push(results.user);
-    }
-  });
-};
+exports.game_list_get = function (req, res, next) {
+  Game.find({}, function(err, games) {
+    res.render('game_list', {games: games});
+  })
+}
 
 exports.game_get = function(req, res, next){
   var game_id = req.params.id;
@@ -79,11 +61,23 @@ exports.game_create_get = function(req, res, next){
       res.render('game_create', {title: title});
 };
 
-exports.game_create_post = function(req, res, next){
-  var game = new Game({ name: 'hitler',
-                      status: 'PreGame'});
-  game.save(function(err){
-    if(err) { return next(err); }
+exports.game_create_post = function (req, res, next) {
+  var game = new Game({
+    name: 'hitler',
+    status: 'PreGame'
+  });
+  game.save(function (err) {
+    if (err) { return next(err); }
     res.redirect('/');
-  }); 
+  });
+};
+
+exports.game_delete_post = function (req, res, next) {
+  console.log(req.params.id);
+  Game.findByIdAndRemove(req.params.id, function(err, removeRes) {
+    if(err) {
+      return next(err);
+    }
+    res.redirect('/game');
+  })
 };
