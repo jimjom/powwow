@@ -1,5 +1,9 @@
 extends layout
 
+append head
+    script(type='text/javascript' src='/javascripts/sockets.js')
+    script(type='text/javascript' src='/socket.io/socket.io.js')
+
 block content
   h1= title
 
@@ -10,4 +14,9 @@ block content
     ul
     each user in game.user_list
       li  #{user.userName}
+
+  button#btn_rock.btn(type='button') Rock 
+  button.btn(type='button' onclick='throw_paper()') Paper 
+  button.btn(type='button' onclick='throw_scissors()') Scissors 
+  div#socket_response
 
