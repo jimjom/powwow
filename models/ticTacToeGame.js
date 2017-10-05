@@ -9,6 +9,7 @@ module.exports = function ticTacToeGame(game_id){
 	this.player_2_move = '';
 	
 	this.addPlayer = function (player_id){
+		if(this.player_1_id == player_id) { return;}
 		if(this.player_1_id === ''){
 			this.player_1_id = player_id;
 		}else if (this.player_2_id === ''){
