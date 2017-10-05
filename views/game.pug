@@ -1,8 +1,8 @@
 extends layout
 
 append head
-    script(type='text/javascript' src='/javascripts/sockets.js')
     script(type='text/javascript' src='/socket.io/socket.io.js')
+    script(type='text/javascript' src='/javascripts/ticTacToe.js')
 
 block content
   h1= title
@@ -10,13 +10,13 @@ block content
   if(game)
     h1= game.name
 
-  if(game.user_list)
-    ul
-    each user in game.user_list
-      li  #{user.userName}
+  //if(game.user_list)
+  //  ul
+  //  each user in game.user_list
+  //    li  #{user.userName}
 
   button#btn_rock.btn(type='button') Rock 
-  button.btn(type='button' onclick='throw_paper()') Paper 
-  button.btn(type='button' onclick='throw_scissors()') Scissors 
-  div#socket_response
+  button#btn_paper.btn(type='button') Paper 
+  button#btn_scissors.btn(type='button') Scissors 
+  div#div_log
 
