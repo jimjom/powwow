@@ -23,12 +23,12 @@ $(function() {
 	move_callback('player_id '+get_user_id());
 	
 	$("#btn_rock").click( function(){
-		socket.emit('throw', 'rock');
+		socket.emit('throw', {'user_id':user_id,'move':'rock'});
 	});
 	$("#btn_paper").click( function(){
-		socket.emit('throw', 'paper');
+		socket.emit('throw', {'user_id':user_id,'move':'paper'});
 	});
 	$("#btn_scissors").click( function(){
-		socket.emit('throw', 'scissors');
+		socket.emit('throw', {'user_id':user_id,'move':'scissors'});
 	});
 });

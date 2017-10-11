@@ -1,8 +1,7 @@
-var ticTacToe = require("../models/ticTacToeGame");
+var powwow_game = require("../models/powwow_game");
 
 var all_games = {};
 var all_clients = {};
-
 
 exports.socket_connection = function(client) {
 
@@ -11,24 +10,20 @@ exports.socket_connection = function(client) {
 
     var game = all_games.game_id;
     if(game === undefined){
-    	game = new ticTacToe(game_id);
+    	game = new powwow_game(game_id);
 	all_games.game_id = game;
     } 
+
     if(all_clients.user_id === undefined){
         all_clients.user_id = client;
     }
 
-    game.addPlayer(user_id);
+    game.addPlayer(user_id, client);
 
-    client.emit('move', user_id + ' joined');
-
-    var move_callback = function(move){
-	all_clients.game.player_1_id.emit('move', move);
-	all_clients.game.player_2_id.emit('move', move);
-    };
-
-    client.on('throw', function(move) {
-	console.log(move);
-	game.move(user_id, move, move_callback);
+    Object.keys(game.socketHandlers).forEach(function(message){
+        client.on(message, game.socketHandlers[message]);
     });
+    //game.socketMessages.forEach(function(message){
+    //	client.on(message, game.socketHandlers[message]);
+    //});
 };
