@@ -34,11 +34,10 @@ exports.game_get = function(req, res, next){
       var is_in_user_list = results.game.user_list.filter(function (user) {
         return (user._id.toString() == results.user._id.toString());
       }).length > 0; 
-      console.log(is_in_user_list);
+
       if(!is_in_user_list) {
         results.game.user_list.push(results.user); 
         results.game.save();
-        console.log(results.game.user_list);
       }
       
       //results.game.populate('user_list').exec( function (err, game) {
