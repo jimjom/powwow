@@ -24,6 +24,7 @@ var io = require('socket.io')(server);
 var socketController = require('../controllers/socketController.js');
 
 io.on('connection', socketController.socket_connection);
+io.on('disconnect', socketController.socket_disconnect);
 
 /**
  * Listen on provided port, on all network interfaces.

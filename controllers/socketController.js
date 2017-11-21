@@ -11,10 +11,17 @@ var get_game_id = function(client){
   return client.handshake.headers.referer.substr(client.handshake.headers.referer.lastIndexOf('/') + 1);
 };
 
+exports.all_sockets = all_sockets;
+
 exports.socket_connection = function(client) {
   exports.connect_client(client);
 };
 
+exports.socket_disconnect = function(client) {
+  var socket_id = get_socket_id(client);
+  
+  delete all_sockets[socket_id];
+}
 
 exports.connect_client = function(client) {
     var socket_id = get_socket_id(client);
@@ -26,8 +33,8 @@ exports.connect_client = function(client) {
 	all_games.game_id = game;
     } 
 
-    if(all_sockets.socket_id === undefined){
-        all_sockets.socket_id = client;
+    if(all_sockets[socket_id] === undefined){
+        all_sockets[socket_id] = client;
     }
 
     Object.keys(game.socketHandlers).forEach(function(message){
@@ -36,3 +43,4 @@ exports.connect_client = function(client) {
 
     return socket_id;
 };
+

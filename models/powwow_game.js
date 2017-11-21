@@ -1,5 +1,6 @@
 
-var default_game_type = 'ticTacToe'; 
+//var default_game_type = 'ticTacToe'; 
+var default_game_type = 'secretHitler';
 
 module.exports = function powwow_game(game_id){
 

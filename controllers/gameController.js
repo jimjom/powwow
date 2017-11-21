@@ -31,9 +31,15 @@ exports.game_get = function(req, res, next){
     }
   },
     function(err, results){
-      var is_in_user_list = results.game.user_list.filter(function (user) {
-        return (user._id.toString() == results.user._id.toString());
-      }).length > 0; 
+      var is_in_user_list = false;
+      if (results.game.user_list === undefined){
+        results.game.user_list = [];
+      }
+      if(results.user !== undefined){
+        is_in_user_list = results.game.user_list.filter(function (user) {
+          return (user._id.toString() == results.user._id.toString());
+        }).length > 0; 
+      }
 
       if(!is_in_user_list) {
         results.game.user_list.push(results.user); 
@@ -41,7 +47,9 @@ exports.game_get = function(req, res, next){
       }
       
       //results.game.populate('user_list').exec( function (err, game) {
-        res.render('game', {game: results.game});
+
+	//user game.name pug template TODO: add property for template to use
+        res.render(results.game.name, {game: results.game});
       //});
     }
   );
@@ -53,7 +61,7 @@ exports.game_create_get = function(req, res, next){
 
 exports.game_create_post = function (req, res, next) {
   var game = new Game({
-    name: 'hitler',
+    name: 'powwow_SecretHitler',
     status: 'PreGame'
   });
   game.save(function (err) {
