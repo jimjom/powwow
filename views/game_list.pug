@@ -16,10 +16,12 @@ block content
                     td.game-status #{game.status}
                     td.game-id #{game.id}
                     td
-                        form(method='GET' action='game/'+game.id)
-                            button.game-delete.btn-primary(type='submit') Join
+                        form(method='GET' action='/game/'+game.id)
+                          if(user_id)
+                            input(type='hidden', name='user_id', value=user_id)
+                          button.btn-primary(type='submit') Join
                     td
                         form(method='POST' action='game/delete/'+game.id)
-                            button.game-delete.btn-primary(type='submit') Delete
+                          button.btn-primary(type='submit') Delete
 
 

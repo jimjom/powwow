@@ -6,13 +6,14 @@ var title = 'PowWow';
 
 exports.game_list_get = function (req, res, next) {
   Game.find({}, function(err, games) {
-    res.render('game_list', {games: games});
+    var user_id = req.cookies['user_id'];
+    res.render('game_list', {games: games, user_id: user_id});
   })
 };
 
 exports.game_get = function(req, res, next){
   var game_id = req.params.id;
-  var user_id = req.cookies['user_id'];
+  var user_id = req.query.user_id;
 
   async.parallel({
     game: function(callback){
@@ -24,33 +25,36 @@ exports.game_get = function(req, res, next){
       });
     },
     user: function(callback){
+      if(user_id !== undefined){
       User.findById(user_id, function(err, user) {
         if(err){ return next(err); }
         callback(null, user);
-      });
+        });
+      }else{
+	callback(null, undefined);
+      }
     }
   },
     function(err, results){
-      var is_in_user_list = false;
-      if (results.game.user_list === undefined){
-        results.game.user_list = [];
+      var game = results.game;
+      var user = results.user;
+
+      if(user === undefined){
+        res.render(game.name+'_board', {game: game});
       }
-      if(results.user !== undefined){
-        is_in_user_list = results.game.user_list.filter(function (user) {
-          return (user._id.toString() == results.user._id.toString());
+      else{
+
+        var user_is_in_game = game.user_list.filter(function (user) {
+          return (user._id.toString() == user._id.toString());
         }).length > 0; 
-      }
 
-      if(!is_in_user_list) {
-        results.game.user_list.push(results.user); 
-        results.game.save();
-      }
-      
-      //results.game.populate('user_list').exec( function (err, game) {
+        if(!user_is_in_game) {
+          results.game.user_list.push(results.user); 
+          results.game.save();
+        }
 
-	//user game.name pug template TODO: add property for template to use
-        res.render(results.game.name, {game: results.game});
-      //});
+	res.render(game.name+'_client', {game:game, user:user});
+      }
     }
   );
 };
