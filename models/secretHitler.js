@@ -1,3 +1,5 @@
+var socketController = require('../controllers/socketController');
+
 module.exports = function secretHitler(game_id){
 
 	var secretHitler = this;
@@ -9,17 +11,20 @@ module.exports = function secretHitler(game_id){
 
 	this.addPlayer = function(player_id, player_name){
 		this.players[player_id] = player_name;
-		console.log(this.players);
+
+		socketController.broadcast('log', 'player '+player_id+' joined');
 	};
 
 	this.removePlayer = function(player_id){
 		delete this.players[player_id];
+
+		socketController.broadcast('log', 'player '+player_id+' left');
 	};
 
 	this.socketHandlers['client_Connect'] = function(data){
 		secretHitler.addPlayer(data.user_id, data.user_name);
 	};
 	this.socketHandlers['client_Disconnect'] = function(data){
-		secretHitler.removePlayer(data.user_name);
+		secretHitler.removePlayer(data.user_id);
 	};	
 };

@@ -22,6 +22,13 @@ app.set('port', port);
 var server = http.createServer(app);
 var io = require('socket.io')(server);
 var socketController = require('../controllers/socketController.js');
+socketController.socket_connection_callback = function(socket_id){
+  this.broadcast('log','connection to '+socket_id);
+};
+socketController.socket_disconnect_callback = function(socket_id){
+  //this.broadcast('log','disconnect from '+socket_id);
+  this.broadcast('log','Object.keys(all_sockets).length: '+Object.keys(this.all_sockets).length);
+};
 
 io.on('connection', socketController.socket_connection);
 io.on('disconnect', socketController.socket_disconnect);
