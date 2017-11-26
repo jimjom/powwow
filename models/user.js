@@ -7,11 +7,11 @@ var UserSchema = Schema({
 });
 
 // Virtual for this genre instance URL
-//GenreSchema
-//.virtual('url')
-//.get(function () {
-//  return '/catalog/genre/'+this._id;
-//});
+UserSchema
+.virtual('user_id')
+.get(function () {
+  return this._id;
+});
 
 //Export model
 module.exports = mongoose.model('User', UserSchema);

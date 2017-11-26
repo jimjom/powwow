@@ -40,6 +40,10 @@ exports.connect_client = function(client) {
 	user.add_socket_handlers(game.socketHandlers);
     } 
 
+    if(user.user_id !== undefined){
+	game.addPlayer(user.user_id);
+    }
+
     if(all_sockets[user.user_id] === undefined){
         all_sockets[user.user_id] = user;
     }
@@ -55,6 +59,9 @@ exports.disconnect_client = function(client) {
 
   if(user !== undefined){
     socket_id = user.socket_id;
+    if(user.user_id !== undefined){
+      all_games[user.game_id].removePlayer(user.user_id);
+    }
     delete all_sockets[user.user_id];
   }
 

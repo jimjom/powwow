@@ -11,6 +11,7 @@ var user = require('./routes/user');
 var game = require('./routes/game');
 
 var app = express();
+debug_mode = false;
 
 // database setup
 var mongoose = require('mongoose');

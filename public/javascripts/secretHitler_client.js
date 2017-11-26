@@ -23,10 +23,7 @@ $(function() {
 	socket = io.connect('http://localhost:3000');
 	socket.on("log", log_callback);
 
-	$("#btn_connect").click( function(){
-		socket.emit('client_Connect', {'user_id':user_id,'user_name':user_name});
-	});
-	$("#btn_disconnect").click( function(){
-		socket.emit('client_Disconnect', {'user_id':user_id});
+	$("#btn_start").click( function(){
+		socket.emit('start_game', {'user_id':user_id});
 	});
 });

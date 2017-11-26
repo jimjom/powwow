@@ -11,7 +11,7 @@ module.exports = function powwow_game(game_id){
 	this.game_type = game_type;
 	this.game_id = game_id;
 
-	this.addPlayer = function(player_id, client){game.addPlayer(player_id,client) };
+	this.addPlayer = function(player_id){ game.addPlayer(player_id) };
 	this.removePlayer = function(player_id) { game.removePlayer(player_id) };
 
 	this.socketMessages = game.socketMessages;

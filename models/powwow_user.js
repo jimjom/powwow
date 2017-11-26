@@ -1,6 +1,8 @@
 
 var get_user_id = function(socket){
-  return socket.handshake.headers.referer.substr(socket.handshake.headers.referer.lastIndexOf('user_id=') + 8);
+  var referer = socket.handshake.headers.referer;
+  var indexOfUserID = referer.lastIndexOf('user_id=');
+  return (indexOfUserID > 0) ? referer.substr(indexOfUserID + 8) : undefined;
 };
 
 var get_user_name = function(user_id){
