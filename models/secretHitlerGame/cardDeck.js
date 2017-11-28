@@ -5,15 +5,19 @@ var Deck = function(card_array) {
   this.shuffle = function(){
     var num_cards = this.cards.length;
     var num_cards_left = num_cards;
-    var new_deck = [num_cards];
+    var new_deck = new Array(num_cards);
 
     for(let i=0; i<num_cards; i++){
-      var random_index_from_remaining = Math.floor(Math.random() * num_cards_left); 
-      var final_spot = random_index_from_remaining;
-      for(let j=0;j<random_index_from_remaining; j++){
-        if(new_deck[j] !== undefined){ final_spot++; } 
+      var empty_spot_to_place_in = Math.floor(Math.random() * num_cards_left)+1; 
+      var empty_slots = 0;
+      var final_index=0;
+      while(empty_slots != empty_spot_to_place_in){
+        if(new_deck[final_index] === undefined) { empty_slots++; }
+        if(empty_spot_to_place_in === empty_slots) { break; }
+        final_index++;
       }
-      new_deck[i] = this.cards[final_spot];
+      new_deck[final_index] = this.cards[i];
+      num_cards_left--;
     }
     
     this.cards = new_deck;
@@ -22,20 +26,4 @@ var Deck = function(card_array) {
 
 module.exports.createDeck = function(card_array){
   return new Deck(card_array);
-};
-
-module.exports.shuffle = function(deck){
-  var num_cards = deck.cards.length;
-  var num_cards_left = num_cards;
-  var new_deck = [num_cards];
-
-  for(let i=0; i<num_cards; i++){
-    var random_index_from_remaining = Math.floor(Math.random() * num_cards_left); 
-    var final_spot = random_index_from_remaining;
-    for(let j=0;j<random_index_from_remaining; j++){
-      if(new_deck[j] !== undefined){ final_spot++; } 
-    }
-    new_deck[i] = deck[final_spot];
-  }
-  deck.cards = new_deck;
 };

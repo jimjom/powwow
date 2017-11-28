@@ -1,10 +1,10 @@
 doctype html
-html
+html(ng-app='powwow_App')
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
-    script(type='text/javascript' src='/javascripts/ajax.js')
-    script(type='text/javascript' src='https://code.jquery.com/jquery-1.10.2.min.js')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css') 
     block head
   body
     block content
+    block scripts

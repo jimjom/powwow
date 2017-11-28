@@ -38,32 +38,10 @@ module.exports.generate = function generate(players){
   for(var i=1; i<= num_facists; i++){ roleCards[i] = 'facist'; }
   for(var i=num_facists+1; i<num_players; i++) { roleCards[i] = 'liberal'; }
   var deck = cardDeck.createDeck(roleCards); 
-  //deck.shuffle();
-  console.log(deck);
-  /*var hitlerIndex = module.exports.getHitler(num_players);
+  deck.shuffle();
 
-  console.log(testArr[2]);
   var count=0;
-  var hitler_left_modifier = 1;
   player_keys.forEach(function (player_id){
-    var role;
-    if(count === hitlerIndex){
-       role = 'hitler';
-       hitler_left_modifier = 0;
-    }else if (num_facists === 0){
-       role = 'liberal';
-    }else if ((count+num_facists+hitler_left_modifier)+1 ===  num_players){
-       role = 'facist';
-    }else{
-      var facist_percent = num_facists/num_players;
-      if (Math.random() < facist_percent){
-        role = 'facist';
-      }else{
-        role = 'liberal';
-      }
-    }
-    players[player_id].role = role;
-    if (role == 'facist') { num_facists--; }
-    count++;
-  });*/
+    players[player_id].role = deck.cards[count++];
+  });
 };

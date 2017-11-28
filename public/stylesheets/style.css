@@ -10,6 +10,7 @@ body {
   color: #606468; */
   font: 87.5%/1.5em 'Open Sans', sans-serif;
   margin: 0;
+  text-align: center;
 }
 
 input {
@@ -23,4 +24,37 @@ input {
 
 p {
   line-height: 1.5em;
+}
+
+.user_img {
+  height: 100px;
+  width: 100px;
+}
+
+.powwow_user {
+  border: 2px solid black;
+  border-radius: 5px;
+  margin: 2px;
+}
+
+.current_user {
+  padding: 5px;
+  background-color: lightblue !important;
+}
+
+.user_notReady {
+  background-color: #868e96;
+}
+
+.user_ready {
+  background-color: lightgreen;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.div-show-hide {
+  transition: all linear 1.2s;
+}
+.div-show-hide.ng-hide {
+  opacity: 0;
 }

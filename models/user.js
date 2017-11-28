@@ -3,7 +3,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = Schema({
-    userName: {type: String, required: true, min: 3, max: 100}
+    userName: {type: String, required: true, min: 3, max: 100},
+    isReady: {type: Boolean, required: false}
 });
 
 // Virtual for this genre instance URL
