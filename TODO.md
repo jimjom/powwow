@@ -4,7 +4,7 @@
 - [ ] debug div
 - [ ] all game phases
 - [ ] client view for picking_chancellor
-- [ ] style role_assigned - panels
+- [x] style role_assigned - panels
 
 ### 11/28
 - [x] buttons on role_assigned
