@@ -35,12 +35,12 @@ describe('secretHitlerTest', function() {
     });
   });
   describe('#secretHitler_startGame_validPlayerNumber', function() {
-    it('Start a game, hope nothing crashes', function() {
+    it('Start a game, should not start, players aren\'t readyhope nothing crashes', function() {
       var secretHitlerGame = new secretHitler('test game');
 	for(var i=0; i<10; i++){
           secretHitlerGame.addPlayer('p'+i);
         }
-      assert.equal(secretHitlerGame.startGame(), true);
+      assert.equal(secretHitlerGame.startGame(), false);
     });
   });
   describe('#secretHitler_startGame_invalidPlayerNumber', function() {

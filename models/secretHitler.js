@@ -20,6 +20,16 @@ module.exports = function secretHitler(game_id){
 	this.players = [];
 	this.players_internal = {};
 
+	this.phase = 'pregame';
+
+	this.changePhase = function(new_phase){
+		this.phase = new_phase;
+		
+		Object.keys(this.players_internal).forEach(function (user_id){
+			secretHitler.players_internal[user_id].isReady = false;
+		});
+	};
+
 	this.all_players_ready = function(){
 
 		var result = true;	
@@ -79,17 +89,19 @@ module.exports = function secretHitler(game_id){
 		}
 	};
 
-	this.getPlayerRolesMessage = function (player_id){
+	this.getPlayerRolesMessage = function (my_id){
 		var result = {};
-		result.role = this.players_internal[player_id].role;
+		result.role = this.players_internal[my_id].role;
 		if(result.role == 'facist'){
 		  result.role_facists = [];
 		  Object.keys(this.players_internal).forEach(function (player_id){
 		    if(secretHitler.players_internal[player_id].role == 'hitler'){
                       result.role_hitler = player_id;
 		    };
-		    if(secretHitler.players_internal[player_id].role == 'hitler'){
-		      result.role_facists.push(player_id);
+		    if(secretHitler.players_internal[player_id].role == 'facist'){
+              if(player_id != my_id){
+		        result.role_facists.push(player_id);
+              }
 		    }
 		  });
 		}
@@ -113,6 +125,7 @@ module.exports = function secretHitler(game_id){
 			socketController.message(player_id, 'player_role_assigned', secretHitler.getPlayerRolesMessage(player_id));
                 });
 
+		this.changePhase('role_assigned');
 		return true;
 	};
 
@@ -123,7 +136,11 @@ module.exports = function secretHitler(game_id){
 		});
 	};
 
+	this.socketHandlers['acknowledge'] = function(data){
+		secretHitler.players_internal[data.user_id].isReady = data.isReady;
+	};
+
 	this.socketHandlers['start_game'] = function(data){
-		console.log(secretHitler.startGame());
+		secretHitler.startGame();
 	};
 };

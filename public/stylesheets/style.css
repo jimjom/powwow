@@ -58,3 +58,8 @@ p {
 .div-show-hide.ng-hide {
   opacity: 0;
 }
+
+.footer {
+  position: absolute;
+  bottom: 0px;
+}

@@ -1,8 +1,3 @@
-
-/*$(function() {
-  socket = io.connect('http://localhost:3000');
-});
-*/
 app.controller('secretHitlerClientCtlr',function secretHitlerClientCtlr($scope, $location, socket) {
 
 	$scope.users = {};
@@ -13,6 +8,13 @@ app.controller('secretHitlerClientCtlr',function secretHitlerClientCtlr($scope, 
 	$scope.start_game = function(){
           socket.emit('start_game');
         };
+    $scope.testStartGame = function(){
+        socket.emit('testStartGame');
+    };
+
+	$scope.acknowledge = function(){
+		socket.emit('acknowledge', {'user_id':$scope.current_user_id, 'isReady':true});
+	};
 
 	$scope.toggle_ready = function(){
 		$scope.current_user.isReady = !$scope.current_user.isReady;
@@ -51,8 +53,8 @@ app.controller('secretHitlerClientCtlr',function secretHitlerClientCtlr($scope, 
 	    if(data.role == 'hitler'){ $scope.game_role_picture = '../images/secret_hitler_1.jpg'; }
 	    if(data.role == 'facist'){ $scope.game_role_picture = '../images/secret_facist_1.jpg'; }
 	    if(data.role == 'liberal'){ $scope.game_role_picture = '../images/secret_liberal_1.jpg'; }
-	    $scope.game_role_hitler = data.role_hitler;
-	    $scope.game_role_facists = data.role_facists;
+	    $scope.game_role_hitler = $scope.users[data.role_hitler].userName;
+	    $scope.game_role_facists = data.role_facists.map( x=> $scope.users[x].userName);
 	};
 
 	var log_callback = function(data){
